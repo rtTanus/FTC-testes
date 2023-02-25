@@ -1,15 +1,18 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Testes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
 @TeleOp
-public class PIDlinear extends LinearOpMode {
+public class PIDlinear extends OpMode {
 
     DcMotorEx Arm;
 
@@ -22,16 +25,30 @@ public class PIDlinear extends LinearOpMode {
 
 
     ElapsedTime tempo = new ElapsedTime();
+
     private double lastError = 0;
     @Override
-    public void runOpMode() {
+    public void init() {
         Arm = hardwareMap.get(DcMotorEx.class, "Arm");
+
+        Arm.setDirection(DcMotor.Direction.REVERSE);
+
         Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        while (opModeIsActive()) {
-            double power = pidLinear(1200);
-            Arm.setPower(power);
+    }
+
+    public void loop() {
+        if (gamepad1.right_bumper) {
+            Arm.setPower(pidLinear(0.6));
+        } else if (gamepad1.left_bumper) {
+            Arm.setPower((pidLinear(-0.6)));
+        }
+        else{
+            Arm.setPower(0);
+        }
+        if (gamepad1.x){
+            Arm.setPower(Arm.getCurrentPosition());
         }
     }
 
@@ -60,5 +77,5 @@ public class PIDlinear extends LinearOpMode {
 
     }
 
-    }
+}
 
