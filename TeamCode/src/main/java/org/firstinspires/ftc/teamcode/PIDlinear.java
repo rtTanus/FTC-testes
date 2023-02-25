@@ -26,7 +26,8 @@ public class PIDlinear extends LinearOpMode {
     @Override
     public void runOpMode() {
         Arm = hardwareMap.get(DcMotorEx.class, "Arm");
-        Arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         while (opModeIsActive()) {
             double power = pidLinear(1200);
@@ -60,3 +61,4 @@ public class PIDlinear extends LinearOpMode {
     }
 
     }
+
